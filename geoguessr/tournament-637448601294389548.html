@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+
+    <title>Geoguessr tournament</title>
+    <meta name="description" content="Geoguessr tournament" />
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin="" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            background: #808080;
+        }
+
+        .map {
+            height: 640px;
+        }
+    </style>
+</head>
+
+<body>
+<script type="text/javascript" src="leaflet.js"></script>
+    <div class="container-fluid" id="content"></div>
+    <script>
+        const games = [{"allGuesses":[[{"playerName":"pasta","roundScoreInPoints":4583,"distanceInMeters":114046.4829252034,"lat":-8.423777499657021,"lng":118.8426060322323},{"playerName":"Nightey","roundScoreInPoints":4090,"distanceInMeters":262914.421604003,"lat":-8.536361817525364,"lng":117.48698738340796},{"playerName":"Kalgoorie Water Service","roundScoreInPoints":3753,"distanceInMeters":375303.1592046998,"lat":-8.674485841289963,"lng":116.46898879165333},{"playerName":"Radu C","roundScoreInPoints":4297,"distanceInMeters":198301.2678778889,"lat":-8.851322805361349,"lng":121.64400695031259},{"playerName":"Topotic ","roundScoreInPoints":2579,"distanceInMeters":866313.4834564794,"lat":-7.7051220163177625,"lng":112.04781977415259},{"playerName":"Jman","roundScoreInPoints":3368,"distanceInMeters":516889.4857876556,"lat":-8.715838245749602,"lng":115.18142785816299},{"playerName":"Giovanni1798p","roundScoreInPoints":1794,"distanceInMeters":1341286.6125384504,"lat":-6.877135421620765,"lng":107.81410076017642},{"playerName":"- \u2119\uD835\uDD60\uD835\uDD5D\uD835\uDD5A\uD835\uDD65\uD835\uDD5A\uD835\uDD69 -","roundScoreInPoints":4964,"distanceInMeters":9581.4473264335,"lat":-8.544470740990166,"lng":119.9452386626843},{"playerName":"  \uD835\uDD64\uD835\uDD60\uD835\uDD66\uD835\uDD65\uD835\uDD59\uD835\uDD53\uD835\uDD6A\uD835\uDD56\uD835\uDFDB\uD835\uDFD8\uD835\uDFD8\uD835\uDFD8","roundScoreInPoints":3339,"distanceInMeters":528233.6110988855,"lat":-3.748267150078888,"lng":119.59489706694592},{"playerName":"Altingwouk","roundScoreInPoints":2754,"distanceInMeters":780457.3218795715,"lat":-8.372019546820738,"lng":112.78273678467056},{"playerName":"pogfactor only \uD83D\uDC1F","roundScoreInPoints":2750,"distanceInMeters":782044.9016501547,"lat":-3.6284238008528567,"lng":114.76535743441741},{"playerName":"Kurt","roundScoreInPoints":1389,"distanceInMeters":1676479.1490035572,"lat":-4.530729676002858,"lng":105.23169248199628},{"playerName":"Tim Davids","roundScoreInPoints":2479,"distanceInMeters":918208.9257770224,"lat":-7.55092445533068,"lng":111.59201934430048},{"playerName":"Mitchell","roundScoreInPoints":1374,"distanceInMeters":1690423.0959553854,"lat":-4.498080061202896,"lng":105.11022404982911},{"playerName":"Kuahs\uD835\uDE5E ","roundScoreInPoints":1239,"distanceInMeters":1825758.391829026,"lat":-3.421478166913927,"lng":104.16933654415539},{"playerName":":P","roundScoreInPoints":4087,"distanceInMeters":263853.0275133258,"lat":-8.505998814810765,"lng":117.47814854598818},{"playerName":"Daimyo","roundScoreInPoints":0,"distanceInMeters":13289709.44359558,"lat":0,"lng":0},{"playerName":"Geomane10K","roundScoreInPoints":550,"distanceInMeters":2887279.191998507,"lat":12.106520901797278,"lng":103.97181265652036},{"playerName":"Toris B","roundScoreInPoints":2631,"distanceInMeters":840203.8087970224,"lat":-7.338976829144867,"lng":112.33739301374472},{"playerName":"Luxlad ","roundScoreInPoints":3383,"distanceInMeters":511261.6236103761,"lat":-8.543535009560124,"lng":115.22845484922527},{"playerName":"Sverre","roundScoreInPoints":2721,"distanceInMeters":796329.9931360339,"lat":-7.252305115815585,"lng":112.75628571141895},{"playerName":"HugoAlvara2","roundScoreInPoints":2432,"distanceInMeters":943292.3521916408,"lat":-2.45198509020955,"lng":113.88885174678116},{"playerName":"AxelBaxel","roundScoreInPoints":1856,"distanceInMeters":1297092.5968663164,"lat":3.171066511148174,"lng":119.59144451017652},{"playerName":"Wilsonia","roundScoreInPoints":2228,"distanceInMeters":1057560.2403584723,"lat":-7.371342672695076,"lng":110.34095622892652},{"playerName":"Wester Wobbes","roundScoreInPoints":1692,"distanceInMeters":1417949.4167720985,"lat":-6.3877498459247,"lng":107.19201804634933},{"playerName":"MayoSlayer","roundScoreInPoints":366,"distanceInMeters":3420992.0436042803,"lat":16.688876583917512,"lng":102.00573189020906},{"playerName":"Merdevine","roundScoreInPoints":2825,"distanceInMeters":747036.2556134063,"lat":-7.524327551770146,"lng":113.16328830931488},{"playerName":"sunkencity64","roundScoreInPoints":380,"distanceInMeters":3373252.8739763643,"lat":15.635578278526875,"lng":101.31019451017652},{"playerName":"Gordonrobot","roundScoreInPoints":0,"distanceInMeters":13289709.44359558,"lat":0,"lng":0},{"playerName":"NotPerrier","roundScoreInPoints":688,"distanceInMeters":2595322.788145336,"lat":14.828462371809037,"lng":120.88406821911093},{"playerName":"slashP","roundScoreInPoints":288,"distanceInMeters":3735378.422150187,"lat":18.131299468592115,"lng":99.12262829963971},{"playerName":"busstop","roundScoreInPoints":2006,"distanceInMeters":1194930.4066953438,"lat":-7.1113904853635,"lng":109.11980650661303},{"playerName":"Intense","roundScoreInPoints":0,"distanceInMeters":13289709.44359558,"lat":0,"lng":0}],[{"playerName":"pasta","roundScoreInPoints":4103,"distanceInMeters":258718.6803109678,"lat":38.49075350568898,"lng":34.86981518058625},{"playerName":"Nightey","roundScoreInPoints":4208,"distanceInMeters":225650.5384057105,"lat":38.03674252926274,"lng":34.09246474334121},{"playerName":"Kalgoorie Water Service","roundScoreInPoints":2859,"distanceInMeters":731197.650095508,"lat":38.6592072010477,"lng":40.4948401210479},{"playerName":"Radu C","roundScoreInPoints":3054,"distanceInMeters":645100.7101359467,"lat":37.048907116175755,"lng":38.87075956074705},{"playerName":"Topotic ","roundScoreInPoints":3203,"distanceInMeters":582797.2915530964,"lat":38.5416874148601,"lng":38.73915073272325},{"playerName":"Jman","roundScoreInPoints":4065,"distanceInMeters":270855.619315362,"lat":38.897360367823225,"lng":35.16662075384813},{"playerName":"Giovanni1798p","roundScoreInPoints":4376,"distanceInMeters":174417.8084489944,"lat":38.518252755328234,"lng":33.810194510176515},{"playerName":"- \u2119\uD835\uDD60\uD835\uDD5D\uD835\uDD5A\uD835\uDD65\uD835\uDD5A\uD835\uDD69 -","roundScoreInPoints":2860,"distanceInMeters":730796.3839710563,"lat":38.89552241735236,"lng":40.529256544331346},{"playerName":"  \uD835\uDD64\uD835\uDD60\uD835\uDD66\uD835\uDD65\uD835\uDD59\uD835\uDD53\uD835\uDD6A\uD835\uDD56\uD835\uDFDB\uD835\uDFD8\uD835\uDFD8\uD835\uDFD8","roundScoreInPoints":2960,"distanceInMeters":685951.5097938516,"lat":37.53202705762799,"lng":39.61485119234613},{"playerName":"Altingwouk","roundScoreInPoints":2575,"distanceInMeters":868308.0669054424,"lat":31.901916613184905,"lng":35.096528144386205},{"playerName":"pogfactor only \uD83D\uDC1F","roundScoreInPoints":2685,"distanceInMeters":813574.9940913377,"lat":40.32765784613029,"lng":41.51350655823944},{"playerName":"Kurt","roundScoreInPoints":3254,"distanceInMeters":562241.9727027653,"lat":37.476296960101365,"lng":38.085416738842135},{"playerName":"Tim Davids","roundScoreInPoints":3451,"distanceInMeters":485068.8259184299,"lat":38.93963252009996,"lng":37.677382010176515},{"playerName":"Mitchell","roundScoreInPoints":3038,"distanceInMeters":651921.4177421677,"lat":37.28415646678349,"lng":39.08466625310102},{"playerName":"Kuahs\uD835\uDE5E ","roundScoreInPoints":3010,"distanceInMeters":663989.4354346526,"lat":38.83159254647035,"lng":39.742759843839394},{"playerName":":P","roundScoreInPoints":2,"distanceInMeters":10243973.570288196,"lat":40.763728826746835,"lng":-108.21750846342827},{"playerName":"Daimyo","roundScoreInPoints":3173,"distanceInMeters":594918.7114379695,"lat":38.584731420273556,"lng":38.89081955188721},{"playerName":"Geomane10K","roundScoreInPoints":4162,"distanceInMeters":240120.8575504214,"lat":37.70925205894533,"lng":33.91869597580685},{"playerName":"Toris B","roundScoreInPoints":2839,"distanceInMeters":740434.2585365531,"lat":38.445529012768866,"lng":40.5578906907057},{"playerName":"Luxlad ","roundScoreInPoints":3314,"distanceInMeters":538332.7056834622,"lat":38.95594970205491,"lng":38.29960356086599},{"playerName":"Sverre","roundScoreInPoints":2878,"distanceInMeters":722733.3697152481,"lat":37.939077707281164,"lng":40.20838796360482},{"playerName":"HugoAlvara2","roundScoreInPoints":2761,"distanceInMeters":777063.4268006858,"lat":39.748673135771206,"lng":41.12120721098597},{"playerName":"AxelBaxel","roundScoreInPoints":3847,"distanceInMeters":343175.2290546866,"lat":38.55490992145584,"lng":35.919569510176515},{"playerName":"Wilsonia","roundScoreInPoints":3306,"distanceInMeters":541370.1157599074,"lat":38.60987740671439,"lng":38.270643728926515},{"playerName":"Wester Wobbes","roundScoreInPoints":3617,"distanceInMeters":423552.5221794341,"lat":38.96028784246151,"lng":36.96414874007369},{"playerName":"MayoSlayer","roundScoreInPoints":0,"distanceInMeters":14056389.55074583,"lat":-51.53448151460949,"lng":-69.61467759258471},{"playerName":"Merdevine","roundScoreInPoints":56,"distanceInMeters":5881358.692282299,"lat":46.89913071212551,"lng":106.63856365080152},{"playerName":"sunkencity64","roundScoreInPoints":2826,"distanceInMeters":746382.6069016968,"lat":37.71218436067615,"lng":40.407858657753984},{"playerName":"Gordonrobot","roundScoreInPoints":60,"distanceInMeters":5778560.161370551,"lat":47.530740422752025,"lng":105.53059258791107},{"playerName":"NotPerrier","roundScoreInPoints":39,"distanceInMeters":6341884.534308327,"lat":20.376235402241868,"lng":95.5802869409698},{"playerName":"slashP","roundScoreInPoints":2359,"distanceInMeters":982807.8758243744,"lat":39.52875365270294,"lng":43.520072434251055},{"playerName":"busstop","roundScoreInPoints":118,"distanceInMeters":4902146.184565718,"lat":51.846467757660214,"lng":94.6585660878917},{"playerName":"Intense","roundScoreInPoints":0,"distanceInMeters":13899779.934617085,"lat":-53.451516972013444,"lng":130.1383195101765}],[{"playerName":"pasta","roundScoreInPoints":4821,"distanceInMeters":47711.5860261653,"lat":24.863887079445504,"lng":55.24258969827952},{"playerName":"Nightey","roundScoreInPoints":4981,"distanceInMeters":4993.91369453,"lat":25.262189470080266,"lng":55.38546576822012},{"playerName":"Kalgoorie Water Service","roundScoreInPoints":4957,"distanceInMeters":11401.640861563,"lat":25.229875069324308,"lng":55.325076873341686},{"playerName":"Radu C","roundScoreInPoints":4973,"distanceInMeters":7148.0446997167,"lat":25.205056730197473,"lng":55.39147794188386},{"playerName":"Topotic ","roundScoreInPoints":4927,"distanceInMeters":19223.7757764144,"lat":25.105986885803965,"lng":55.339912980346305},{"playerName":"Jman","roundScoreInPoints":4901,"distanceInMeters":26189.3687454987,"lat":25.025247872312494,"lng":55.38312190123018},{"playerName":"Giovanni1798p","roundScoreInPoints":4801,"distanceInMeters":53179.0528083013,"lat":25.28160412001476,"lng":55.962769937510174},{"playerName":"- \u2119\uD835\uDD60\uD835\uDD5D\uD835\uDD5A\uD835\uDD65\uD835\uDD5A\uD835\uDD69 -","roundScoreInPoints":4945,"distanceInMeters":14550.4497286365,"lat":25.185494126548704,"lng":55.3128902341102},{"playerName":"  \uD835\uDD64\uD835\uDD60\uD835\uDD66\uD835\uDD65\uD835\uDD59\uD835\uDD53\uD835\uDD6A\uD835\uDD56\uD835\uDFDB\uD835\uDFD8\uD835\uDFD8\uD835\uDFD8","roundScoreInPoints":4962,"distanceInMeters":10109.268510116,"lat":25.24266222152357,"lng":55.53408085521467},{"playerName":"Altingwouk","roundScoreInPoints":4921,"distanceInMeters":20843.7148224426,"lat":25.29537249623116,"lng":55.63736641340144},{"playerName":"pogfactor only \uD83D\uDC1F","roundScoreInPoints":4979,"distanceInMeters":5382.2129265356,"lat":25.266207273589604,"lng":55.38232440137699},{"playerName":"Kurt","roundScoreInPoints":4916,"distanceInMeters":22050.036256788,"lat":25.342236184121003,"lng":55.63223555579446},{"playerName":"Tim Davids","roundScoreInPoints":4869,"distanceInMeters":34628.1744637488,"lat":25.39453857664907,"lng":55.74328666373678},{"playerName":"Mitchell","roundScoreInPoints":4738,"distanceInMeters":70350.4074032035,"lat":24.72035018180992,"lng":55.06339266407547},{"playerName":"Kuahs\uD835\uDE5E ","roundScoreInPoints":4759,"distanceInMeters":64760.2547675856,"lat":24.674851814405873,"lng":55.39433451125865},{"playerName":":P","roundScoreInPoints":4851,"distanceInMeters":39557.5071079671,"lat":25.236076100135424,"lng":55.827360923182766},{"playerName":"Daimyo","roundScoreInPoints":4945,"distanceInMeters":14439.412524364,"lat":25.163762348483836,"lng":55.33375742280842},{"playerName":"Geomane10K","roundScoreInPoints":4943,"distanceInMeters":15008.1503402842,"lat":25.26135174507822,"lng":55.58379512633704},{"playerName":"Toris B","roundScoreInPoints":4870,"distanceInMeters":34551.4269088779,"lat":25.42338788502077,"lng":55.72440076691676},{"playerName":"Luxlad ","roundScoreInPoints":4700,"distanceInMeters":80965.279558388,"lat":24.762166488607292,"lng":54.84432920737663},{"playerName":"Sverre","roundScoreInPoints":1050,"distanceInMeters":2042153.8376841068,"lat":31.960715691025168,"lng":35.915955056506235},{"playerName":"HugoAlvara2","roundScoreInPoints":4894,"distanceInMeters":28059.8150029379,"lat":25.415728332755485,"lng":55.650916264881516},{"playerName":"AxelBaxel","roundScoreInPoints":1111,"distanceInMeters":1968657.225979162,"lat":31.660722317302668,"lng":36.622694510176515},{"playerName":"Wilsonia","roundScoreInPoints":4657,"distanceInMeters":93096.7271715679,"lat":24.439002041271355,"lng":55.233534353926515},{"playerName":"Wester Wobbes","roundScoreInPoints":4491,"distanceInMeters":140348.9089742718,"lat":24.430670265087883,"lng":54.38240584509772},{"playerName":"MayoSlayer","roundScoreInPoints":4907,"distanceInMeters":24690.660557518,"lat":25.103400753857617,"lng":55.25653722895436},{"playerName":"Merdevine","roundScoreInPoints":4725,"distanceInMeters":73963.9118576588,"lat":24.868350340632134,"lng":54.838026541426515},{"playerName":"sunkencity64","roundScoreInPoints":986,"distanceInMeters":2124723.4386038743,"lat":32.22213422188824,"lng":35.09300366198132},{"playerName":"Gordonrobot","roundScoreInPoints":2495,"distanceInMeters":909354.6813314634,"lat":25.680851272288443,"lng":46.386826785339835},{"playerName":"NotPerrier","roundScoreInPoints":212,"distanceInMeters":4137589.839604807,"lat":32.58805253315192,"lng":13.471553771980433},{"playerName":"slashP","roundScoreInPoints":1078,"distanceInMeters":2007959.605728154,"lat":31.26942172972923,"lng":36.06508936161121},{"playerName":"busstop","roundScoreInPoints":1053,"distanceInMeters":2038519.4240164373,"lat":32.01426334281022,"lng":35.97494225186347},{"playerName":"Intense","roundScoreInPoints":1,"distanceInMeters":11381522.539792037,"lat":-68.21405824306804,"lng":112.56019451017652}],[{"playerName":"pasta","roundScoreInPoints":4702,"distanceInMeters":80390.4617407659,"lat":23.835463621007186,"lng":120.87713337031211},{"playerName":"Nightey","roundScoreInPoints":4684,"distanceInMeters":85483.6964999064,"lat":23.86384761738957,"lng":120.83036080950905},{"playerName":"Kalgoorie Water Service","roundScoreInPoints":4760,"distanceInMeters":64414.8443483712,"lat":23.71412323068588,"lng":120.96208457795711},{"playerName":"Radu C","roundScoreInPoints":4978,"distanceInMeters":5751.1860740114,"lat":23.152861582742503,"lng":121.23311917200272},{"playerName":"Topotic ","roundScoreInPoints":4855,"distanceInMeters":38607.5383926885,"lat":22.87518813087855,"lng":121.12322983645169},{"playerName":"Jman","roundScoreInPoints":4607,"distanceInMeters":107151.9823122887,"lat":24.154342427779827,"lng":121.40564990273393},{"playerName":"Giovanni1798p","roundScoreInPoints":4732,"distanceInMeters":72034.4692074205,"lat":23.52893167254111,"lng":120.64613201017652},{"playerName":"- \u2119\uD835\uDD60\uD835\uDD5D\uD835\uDD5A\uD835\uDD65\uD835\uDD5A\uD835\uDD69 -","roundScoreInPoints":4372,"distanceInMeters":175761.8962827053,"lat":24.76673454757396,"lng":121.4893099173878},{"playerName":"  \uD835\uDD64\uD835\uDD60\uD835\uDD66\uD835\uDD65\uD835\uDD59\uD835\uDD53\uD835\uDD6A\uD835\uDD56\uD835\uDFDB\uD835\uDFD8\uD835\uDFD8\uD835\uDFD8","roundScoreInPoints":4785,"distanceInMeters":57505.9360781667,"lat":22.833683097201163,"lng":120.85864624293971},{"playerName":"Altingwouk","roundScoreInPoints":4577,"distanceInMeters":115667.6433919693,"lat":24.240164517955538,"lng":121.21136869868553},{"playerName":"pogfactor only \uD83D\uDC1F","roundScoreInPoints":4672,"distanceInMeters":88849.742335213,"lat":23.592247752782267,"lng":120.49559629945861},{"playerName":"Kurt","roundScoreInPoints":4739,"distanceInMeters":70255.1243091595,"lat":23.733644266814704,"lng":120.88458224959311},{"playerName":"Tim Davids","roundScoreInPoints":4476,"distanceInMeters":144953.8395446846,"lat":24.483012002730362,"lng":120.99805305431953},{"playerName":"Mitchell","roundScoreInPoints":4955,"distanceInMeters":11944.3983452069,"lat":23.116402269642677,"lng":121.18210592375425},{"playerName":"Kuahs\uD835\uDE5E ","roundScoreInPoints":4662,"distanceInMeters":91603.1360243236,"lat":23.977690410279315,"lng":120.95583497081759},{"playerName":":P","roundScoreInPoints":4661,"distanceInMeters":91864.5102260751,"lat":23.984541773138545,"lng":120.96973584947398},{"playerName":"Daimyo","roundScoreInPoints":4497,"distanceInMeters":138674.2411628774,"lat":24.34295610721025,"lng":120.70755366017579},{"playerName":"Geomane10K","roundScoreInPoints":4756,"distanceInMeters":65433.8398967747,"lat":23.787812742422954,"lng":121.29779493409842},{"playerName":"Toris B","roundScoreInPoints":4662,"distanceInMeters":91719.8772859162,"lat":24.022889581364335,"lng":121.32674726374151},{"playerName":"Luxlad ","roundScoreInPoints":4684,"distanceInMeters":85351.6801860395,"lat":23.134970544021332,"lng":120.42267903478114},{"playerName":"Sverre","roundScoreInPoints":4484,"distanceInMeters":142644.5639153303,"lat":24.260795166935644,"lng":120.46540508642403},{"playerName":"HugoAlvara2","roundScoreInPoints":1385,"distanceInMeters":1679904.9682288698,"lat":36.845323904462276,"lng":128.7828166805642},{"playerName":"AxelBaxel","roundScoreInPoints":3841,"distanceInMeters":345150.2241675232,"lat":26.123729334565667,"lng":122.40394451017652},{"playerName":"Wilsonia","roundScoreInPoints":4380,"distanceInMeters":173341.9299579325,"lat":24.75865776119342,"lng":121.19544841642652},{"playerName":"Wester Wobbes","roundScoreInPoints":4425,"distanceInMeters":159844.9815916198,"lat":24.623555636400372,"lng":121.47851263817668},{"playerName":"MayoSlayer","roundScoreInPoints":652,"distanceInMeters":2665660.801790405,"lat":40.716134590262975,"lng":140.7394324632608},{"playerName":"Merdevine","roundScoreInPoints":1430,"distanceInMeters":1638059.606320981,"lat":15.692649240661435,"lng":107.7964687386156},{"playerName":"sunkencity64","roundScoreInPoints":4567,"distanceInMeters":118597.3536154454,"lat":24.237365189198588,"lng":120.98062558701335},{"playerName":"Gordonrobot","roundScoreInPoints":865,"distanceInMeters":2296465.541494502,"lat":2.8605556396757086,"lng":117.55823157834622},{"playerName":"NotPerrier","roundScoreInPoints":1643,"distanceInMeters":1456512.3971430291,"lat":21.110422038332896,"lng":107.28666131990661},{"playerName":"slashP","roundScoreInPoints":1616,"distanceInMeters":1478010.7806983392,"lat":34.46193278165241,"lng":129.34162003787125},{"playerName":"busstop","roundScoreInPoints":874,"distanceInMeters":2282640.3477131273,"lat":15.48984029780809,"lng":101.05846008297681},{"playerName":"Intense","roundScoreInPoints":3,"distanceInMeters":9856717.249626089,"lat":-64.86020756398096,"lng":134.3570695101765}],[{"playerName":"pasta","roundScoreInPoints":3475,"distanceInMeters":476053.2636054151,"lat":34.67042830485402,"lng":134.8698989533457},{"playerName":"Nightey","roundScoreInPoints":3679,"distanceInMeters":401611.8672884838,"lat":34.76824295746308,"lng":135.7925859014265},{"playerName":"Kalgoorie Water Service","roundScoreInPoints":4683,"distanceInMeters":85567.8795617225,"lat":37.16108426464311,"lng":140.25422689313044},{"playerName":"Radu C","roundScoreInPoints":2992,"distanceInMeters":671768.4390460089,"lat":42.75243368377658,"lng":141.64405156305043},{"playerName":"Topotic ","roundScoreInPoints":4610,"distanceInMeters":106362.2810283201,"lat":37.92116572708448,"lng":139.53510126952986},{"playerName":"Jman","roundScoreInPoints":3170,"distanceInMeters":596446.7022397897,"lat":34.958859538165505,"lng":133.1759129407897},{"playerName":"Giovanni1798p","roundScoreInPoints":4406,"distanceInMeters":165487.1477480305,"lat":38.100336782296765,"lng":140.55297407423674},{"playerName":"- \u2119\uD835\uDD60\uD835\uDD5D\uD835\uDD5A\uD835\uDD65\uD835\uDD5A\uD835\uDD69 -","roundScoreInPoints":2897,"distanceInMeters":714334.9418458447,"lat":43.086136500380036,"lng":141.9297361722857},{"playerName":"  \uD835\uDD64\uD835\uDD60\uD835\uDD66\uD835\uDD65\uD835\uDD59\uD835\uDD53\uD835\uDD6A\uD835\uDD56\uD835\uDFDB\uD835\uDFD8\uD835\uDFD8\uD835\uDFD8","roundScoreInPoints":3849,"distanceInMeters":342180.8424854001,"lat":39.789575890594314,"lng":140.92013614268885},{"playerName":"Altingwouk","roundScoreInPoints":4702,"distanceInMeters":80394.5394843534,"lat":36.482540177904795,"lng":138.66261348366712},{"playerName":"pogfactor only \uD83D\uDC1F","roundScoreInPoints":3799,"distanceInMeters":359471.9769385443,"lat":35.491544045338735,"lng":135.75864578910205},{"playerName":"Kurt","roundScoreInPoints":4251,"distanceInMeters":212215.4863788988,"lat":35.46602751864203,"lng":137.8769370164616},{"playerName":"Tim Davids","roundScoreInPoints":2673,"distanceInMeters":819319.2567008958,"lat":44.12896030954996,"lng":141.67283565289782},{"playerName":"Mitchell","roundScoreInPoints":3650,"distanceInMeters":411684.5818280851,"lat":34.60104861476049,"lng":135.81899315427796},{"playerName":"Kuahs\uD835\uDE5E ","roundScoreInPoints":3931,"distanceInMeters":314782.8490192234,"lat":35.30035469776326,"lng":136.49501359031584},{"playerName":":P","roundScoreInPoints":3986,"distanceInMeters":296703.3967495928,"lat":35.290354412873036,"lng":136.75975370130658},{"playerName":"Daimyo","roundScoreInPoints":4869,"distanceInMeters":34686.110163769,"lat":36.70672207296973,"lng":139.12982010915113},{"playerName":"Geomane10K","roundScoreInPoints":2571,"distanceInMeters":870421.2438519832,"lat":43.75336056024864,"lng":144.47817659128808},{"playerName":"Toris B","roundScoreInPoints":1540,"distanceInMeters":1541022.941114632,"lat":26.742927263683008,"lng":128.28175648177313},{"playerName":"Luxlad ","roundScoreInPoints":5,"distanceInMeters":9119628.749495123,"lat":46.957265369131115,"lng":15.844822209709719},{"playerName":"Sverre","roundScoreInPoints":4483,"distanceInMeters":142924.6480028044,"lat":38.12814492847786,"lng":140.04679558612665},{"playerName":"HugoAlvara2","roundScoreInPoints":3984,"distanceInMeters":297237.4200023234,"lat":35.6041809573299,"lng":136.47328521252385},{"playerName":"AxelBaxel","roundScoreInPoints":4728,"distanceInMeters":73287.7327176417,"lat":36.3220739362374,"lng":139.2789445101765},{"playerName":"Wilsonia","roundScoreInPoints":88,"distanceInMeters":5279568.522435693,"lat":3.9430124053026354,"lng":102.07923747892652},{"playerName":"Wester Wobbes","roundScoreInPoints":66,"distanceInMeters":5671919.143062504,"lat":-7.218155288880307,"lng":112.10285017185463},{"playerName":"MayoSlayer","roundScoreInPoints":4270,"distanceInMeters":206452.7869035416,"lat":38.61491581009403,"lng":140.43151639727066},{"playerName":"Merdevine","roundScoreInPoints":15,"distanceInMeters":7604213.329980144,"lat":52.88362022444216,"lng":35.963514822676515},{"playerName":"sunkencity64","roundScoreInPoints":17,"distanceInMeters":7444738.37300393,"lat":50.83458368435163,"lng":40.78003017289264},{"playerName":"Gordonrobot","roundScoreInPoints":4617,"distanceInMeters":104277.4923751036,"lat":37.59313379356284,"lng":140.20911027018477},{"playerName":"NotPerrier","roundScoreInPoints":3741,"distanceInMeters":379567.0590914504,"lat":39.822355989317934,"lng":141.73046411115794},{"playerName":"slashP","roundScoreInPoints":337,"distanceInMeters":3528290.883701254,"lat":8.009509020047929,"lng":125.06791626364435},{"playerName":"busstop","roundScoreInPoints":14,"distanceInMeters":7664161.55280276,"lat":47.31035813770965,"lng":40.54758150721216},{"playerName":"Intense","roundScoreInPoints":1,"distanceInMeters":11346718.68644953,"lat":-64.25611763534262,"lng":123.10706951017652}]],"playerGames":[{"player":"pasta","points":21684,"r1":4583,"r2":4103,"r3":4821,"r4":4702,"r5":3475},{"player":"Nightey","points":21642,"r1":4090,"r2":4208,"r3":4981,"r4":4684,"r5":3679},{"player":"Kalgoorie Water Service","points":21012,"r1":3753,"r2":2859,"r3":4957,"r4":4760,"r5":4683},{"player":"Radu C","points":20294,"r1":4297,"r2":3054,"r3":4973,"r4":4978,"r5":2992},{"player":"Topotic ","points":20174,"r1":2579,"r2":3203,"r3":4927,"r4":4855,"r5":4610},{"player":"Jman","points":20111,"r1":3368,"r2":4065,"r3":4901,"r4":4607,"r5":3170},{"player":"Giovanni1798p","points":20109,"r1":1794,"r2":4376,"r3":4801,"r4":4732,"r5":4406},{"player":"- \u2119\uD835\uDD60\uD835\uDD5D\uD835\uDD5A\uD835\uDD65\uD835\uDD5A\uD835\uDD69 -","points":20038,"r1":4964,"r2":2860,"r3":4945,"r4":4372,"r5":2897},{"player":"  \uD835\uDD64\uD835\uDD60\uD835\uDD66\uD835\uDD65\uD835\uDD59\uD835\uDD53\uD835\uDD6A\uD835\uDD56\uD835\uDFDB\uD835\uDFD8\uD835\uDFD8\uD835\uDFD8","points":19895,"r1":3339,"r2":2960,"r3":4962,"r4":4785,"r5":3849},{"player":"Altingwouk","points":19529,"r1":2754,"r2":2575,"r3":4921,"r4":4577,"r5":4702},{"player":"pogfactor only \uD83D\uDC1F","points":18885,"r1":2750,"r2":2685,"r3":4979,"r4":4672,"r5":3799},{"player":"Kurt","points":18549,"r1":1389,"r2":3254,"r3":4916,"r4":4739,"r5":4251},{"player":"Tim Davids","points":17948,"r1":2479,"r2":3451,"r3":4869,"r4":4476,"r5":2673},{"player":"Mitchell","points":17755,"r1":1374,"r2":3038,"r3":4738,"r4":4955,"r5":3650},{"player":"Kuahs\uD835\uDE5E ","points":17601,"r1":1239,"r2":3010,"r3":4759,"r4":4662,"r5":3931},{"player":":P","points":17587,"r1":4087,"r2":2,"r3":4851,"r4":4661,"r5":3986},{"player":"Daimyo","points":17484,"r1":0,"r2":3173,"r3":4945,"r4":4497,"r5":4869},{"player":"Geomane10K","points":16982,"r1":550,"r2":4162,"r3":4943,"r4":4756,"r5":2571},{"player":"Toris B","points":16542,"r1":2631,"r2":2839,"r3":4870,"r4":4662,"r5":1540},{"player":"Luxlad ","points":16086,"r1":3383,"r2":3314,"r3":4700,"r4":4684,"r5":5},{"player":"Sverre","points":15616,"r1":2721,"r2":2878,"r3":1050,"r4":4484,"r5":4483},{"player":"HugoAlvara2","points":15456,"r1":2432,"r2":2761,"r3":4894,"r4":1385,"r5":3984},{"player":"AxelBaxel","points":15383,"r1":1856,"r2":3847,"r3":1111,"r4":3841,"r5":4728},{"player":"Wilsonia","points":14659,"r1":2228,"r2":3306,"r3":4657,"r4":4380,"r5":88},{"player":"Wester Wobbes","points":14291,"r1":1692,"r2":3617,"r3":4491,"r4":4425,"r5":66},{"player":"MayoSlayer","points":10195,"r1":366,"r2":0,"r3":4907,"r4":652,"r5":4270},{"player":"Merdevine","points":9051,"r1":2825,"r2":56,"r3":4725,"r4":1430,"r5":15},{"player":"sunkencity64","points":8776,"r1":380,"r2":2826,"r3":986,"r4":4567,"r5":17},{"player":"Gordonrobot","points":8037,"r1":0,"r2":60,"r3":2495,"r4":865,"r5":4617},{"player":"NotPerrier","points":6323,"r1":688,"r2":39,"r3":212,"r4":1643,"r5":3741},{"player":"slashP","points":5678,"r1":288,"r2":2359,"r3":1078,"r4":1616,"r5":337},{"player":"busstop","points":4065,"r1":2006,"r2":118,"r3":1053,"r4":874,"r5":14},{"player":"Intense","points":5,"r1":0,"r2":0,"r3":1,"r4":3,"r5":1}],"answers":[{"lat":-8.490483388848293,"lng":119.8773309614005},{"lat":39.31553735870696,"lng":32.07395681972764},{"lat":25.25610587084309,"lng":55.43466749277372},{"lat":23.20069121605373,"lng":121.2545311332297},{"lat":36.98046965553065,"lng":139.3167081028675}],"mapName":"Asia","gameNumber":1,"gameUrl":"https://www.geoguessr.com/results/PjMiZZAiOkmdDlOQ","gameDescription":"30 sec. No move"}];
+        const tournament = null;
+        let maps = [];
+        const viewRound = (gameNumber, roundNumber) => {
+            var game = games.filter(x => x.gameNumber === gameNumber)[0];
+            let guesses = game.allGuesses[roundNumber];
+            guesses.sort((a, b) => b.roundScoreInPoints - a.roundScoreInPoints);
+            [0, 1, 2, 3, 4].forEach(x => {
+                document.getElementById(`mapid-game-${gameNumber}-round-${x}`).style.display = x === roundNumber ? "" : "none";
+                var roundTable = document.getElementById(`table-round-game-${gameNumber}`);
+                roundTable.innerHTML = createRoundTable(guesses, roundNumber);
+                roundTable.style.display = "";
+            });
+            const answer = game.answers[roundNumber];
+            const createIcon = (iconColor) =>
+                new L.Icon({
+                    iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${iconColor}.png`,
+                    shadowUrl:
+                        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+                    iconSize: [11, 20],
+                    iconAnchor: [6, 20],
+                    popupAnchor: [1, -34],
+                    shadowSize: [0, 0],
+                });
+            const icons = ["gold", "grey", "orange", "blue"].map(createIcon);
+            if (maps[`${gameNumber}-${roundNumber}`]) {
+                return;
+            }
+
+            const map = L.map(`mapid-game-${gameNumber}-round-${roundNumber}`).setView([51.505, -0.09], 2);
+            L.tileLayer(
+                "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+                {
+                    attribution:
+                        'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    maxZoom: 18,
+                    id: "mapbox/streets-v11",
+                    tileSize: 512,
+                    zoomOffset: -1,
+                    accessToken:
+                        "pk.eyJ1Ijoic2xhc2hwIiwiYSI6ImNrajc2ejVuMzZna2QydnFqNjg2eGx0cDcifQ.0YrOWeCFuS0URH6E1t3qJg",
+                }
+            ).addTo(map);
+            guesses.forEach((guess, index) =>
+                L.marker([guess.lat, guess.lng],
+                    {
+                        zIndexOffset: guesses.length - index,
+                        icon: icons.slice(index)[0] || [...icons].pop(),
+                    })
+                    .bindPopup(
+                        `<b>${guess.playerName}</b><br>${guess.roundScoreInPoints}`
+                    )
+                    .addTo(map)
+            );
+            L.marker([answer.lat, answer.lng],
+                {
+                    zIndexOffset: guesses.length + 100,
+                    icon: createIcon("green"),
+                })
+                .bindPopup("<b>Actual location</b>")
+                .addTo(map);
+            maps[`${gameNumber}-${roundNumber}`] = map;
+        };
+
+        const createRoundRow = player => `
+<tr>
+        <td>${player.playerName}</td>
+        <td class="text-right">${player.roundScoreInPoints}</td>
+        <td class="text-right">${Math.round(player.distanceInMeters * 100) / 100}</td>
+</tr>
+`;
+        const createRoundTable = (players, index) => `
+<tr>
+        <th>Player</th>
+        <th class="text-right">Points in round ${index + 1}</th>
+        <th class="text-right">Distance</th>
+</tr>
+${players.map(createRoundRow).join('')}
+`;
+        const createGameRow = playerGame => `
+<tr>
+        <td>${playerGame.player}</td>
+        <td class="text-right">${playerGame.points}</td>
+        <td class="text-right">${playerGame.r1}</td>
+        <td class="text-right">${playerGame.r2}</td>
+        <td class="text-right">${playerGame.r3}</td>
+        <td class="text-right">${playerGame.r4}</td>
+        <td class="text-right">${playerGame.r5}</td>
+</tr>
+`;
+
+        const createGameTable = game => `
+<table class="table table-dark table-sm">
+        <tr>
+            <th>Player</th>
+            <th class="text-right">Points</th>
+            <th class="text-right cursor-pointer" onclick="viewRound(${game.gameNumber}, 0)">R1</th>
+            <th class="text-right cursor-pointer" onclick="viewRound(${game.gameNumber}, 1)">R2</th>
+            <th class="text-right cursor-pointer" onclick="viewRound(${game.gameNumber}, 2)">R3</th>
+            <th class="text-right cursor-pointer" onclick="viewRound(${game.gameNumber}, 3)">R4</th>
+            <th class="text-right cursor-pointer" onclick="viewRound(${game.gameNumber}, 4)">R5</th>
+        </tr>
+${game.playerGames.map(createGameRow).join('')}
+</table>
+`;
+
+        const createGame = game => `
+<div class="row">
+    <h4 class="col-5">Game ${game.gameNumber} - <a href="${game.gameUrl}" target="_blank" rel="noreferrer noopener">${game.mapName}</a> - ${game.gameDescription}</h4>
+</div>
+<div class="row">
+        <div class="col-5">
+            ${createGameTable(game)}
+        </div>
+        <div class="row col-7">
+            <div class="map col-12" id="mapid-game-${game.gameNumber}-round-0" style="display: none;"></div>
+            <div class="map col-12" id="mapid-game-${game.gameNumber}-round-1" style="display: none;"></div>
+            <div class="map col-12" id="mapid-game-${game.gameNumber}-round-2" style="display: none;"></div>
+            <div class="map col-12" id="mapid-game-${game.gameNumber}-round-3" style="display: none;"></div>
+            <div class="map col-12" id="mapid-game-${game.gameNumber}-round-4" style="display: none;"></div>
+            <table class="table table-dark table-sm col-6" id="table-round-game-${game.gameNumber}"></table>
+        </div>
+</div>
+`;
+        const createTournamentTableRow = playerInTournament => `
+<tr>
+        <td>${playerInTournament.playerName}</td>
+        <td class="text-right">${playerInTournament.totalPoints}</td>
+${playerInTournament.games.map(x => `<td class="text-right">${x.gamePoints === null ? "-" : x.gamePoints}</td>`).join('')}
+</tr>
+`;
+        const createTournamentTable = tournament => `
+<div class="row">
+    <table class="table table-dark table-sm">
+        <tr>
+            <th>Player</th>
+            <th class="text-right">Total points</th>
+${tournament.players[0].games.map((_, i) => `<th class="text-right">Game ${i + 1}</th>`).join('')}
+        </tr>
+${tournament.players.map(createTournamentTableRow).join('')}
+    </table>
+</div>
+`;
+        const content = document.getElementById("content");
+        const tournamentHtml = tournament ? createTournamentTable(tournament) : '';
+        content.innerHTML = tournamentHtml + games.map(createGame).join('');
+    </script>
+</body>
+</html>

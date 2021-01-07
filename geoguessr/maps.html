@@ -15,7 +15,7 @@
 </head>
 
 <body>
-<div id="content"></div>
+<div id="content" class="col-6"></div>
 <script>
     async function init() {
         const githubUsername = new URL(window.location).host.split('.')[0];
@@ -44,7 +44,7 @@
             return `<a href='https://www.geoguessr.com/maps/${map.map.id}' target="_blank" rel="noreferrer noopener">Not found in search</a>`;
         }
 
-        return `<a href='https://www.geoguessr.com/${map.map.url}' target="_blank" rel="noreferrer noopener">${map.map && map.map.name}</a>`;
+        return `<a href='https://www.geoguessr.com${map.map.url}' target="_blank" rel="noreferrer noopener">${map.map && map.map.name}</a>`;
     };
 
     const createMapRow = map => `

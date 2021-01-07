@@ -8,6 +8,9 @@
     <meta name="description" content="Maps" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <style>
+        body {
+            background: #808080;
+        }
     </style>
 </head>
 
@@ -33,7 +36,7 @@
             return '';
         }
 
-        return `${date.getFullYear()} -${(date.getMonth() + 1)} -${date.getDate()}`;
+        return `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
     }
 
     const createMapLink = map => {
@@ -47,7 +50,7 @@
     const createMapRow = map => `
 <tr>
     <td>${map.shortcut}</td>
-    <td></td>
+    <td>${createMapLink(map)}</td>
     <td>${map.map.creator}</td>
     <td class="text-right">${map.map.likes}</td>
     <td>${map.group}</td>

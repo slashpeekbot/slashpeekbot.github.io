@@ -11,6 +11,7 @@
 </head>
 
 <body>
+<div id="content"></div>
 <script>
     async function init() {
         const githubUsername = new URL(window.location).host.split('.')[0];
@@ -22,6 +23,7 @@
         const content = document.getElementById("content");
         content.innerHTML = createMapsTable(data);
     }
+
     init();
 
     const createMapRow = map => `

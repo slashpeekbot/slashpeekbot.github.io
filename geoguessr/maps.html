@@ -6,6 +6,7 @@
 
     <title>Geoguessr Maps</title>
     <meta name="description" content="Maps" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <style>
     </style>
 </head>
@@ -26,14 +27,31 @@
 
     init();
 
+    const createDate = d => {
+        var date = new Date(Date.parse(d));
+        if (!d || d.getFullYear() === 1) {
+            return '';
+        }
+
+        return `${date.getFullYear()} -${(date.getMonth() + 1)} -${date.getDate()}`;
+    }
+
+    const createMapLink = map => {
+        if (!map.map || !map.map.url) {
+            return `<a href='https://www.geoguessr.com/maps/${map.map.id}' target="_blank" rel="noreferrer noopener">Not found in search</a>`;
+        }
+
+        return `<a href='https://www.geoguessr.com/${map.map.url}' target="_blank" rel="noreferrer noopener">${map.map && map.map.name}</a>`;
+    };
+
     const createMapRow = map => `
 <tr>
     <td>${map.shortcut}</td>
-    <td><a href='https://www.geoguessr.com/${map.map.url}' target="_blank" rel="noreferrer noopener">${map.map.name}</a></td>
+    <td></td>
     <td>${map.map.creator}</td>
     <td class="text-right">${map.map.likes}</td>
-    <td>${new Date(Date.parse(map.map.updated)).getFullYear()}-${(new Date(Date.parse(map.map.updated)).getMonth() + 1)}-${new Date(Date.parse(map.map.updated)).getDate()}</td>
     <td>${map.group}</td>
+    <td>${createDate(map.map.updated)}</td>
 </tr>
 `;
     const createMapsTable = maps => `
@@ -41,10 +59,10 @@
             <tr>
                 <th>Shortcut</th>
                 <th>Name</th>
-                <th>Creator></th>
+                <th>Creator</th>
                 <th class="text-right">Likes</th>
-                <th>Updated</th>
                 <th>Group</th>
+                <th>Updated</th>
             </tr>
 ${maps.map(createMapRow).join('')}
 </table>
